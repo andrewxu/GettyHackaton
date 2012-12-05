@@ -7,7 +7,7 @@ gem 'rails', '3.2.8'
 
 gem 'sqlite3'
 gem 'nytimes-articles'
-gem 'twitter'
+gem 'tweetstream'
 
 # Gems used only for assets and not required
 # in production environments by default.
