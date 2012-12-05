@@ -16,29 +16,35 @@ module Api
 
     def search(phrase, onlyGeo = true)
       @statuses = []
-      @client.search(phrase, :count => 100, :geocode => '40.71,74.00,10000mi', :result_type => "mixed").results.map do |status|
-        if (onlyGeo) 
-          if (status.geo)
+      @untilDate = Date.today
+      begin 
+        @client.search(phrase, :count => 100, :geocode => '40.7142,74.0064,150000mi', :until => (@untilDate).to_s(:db), :lang => 'en', :result_type => "mixed").results.map do |status|
+          if (onlyGeo) 
+            if (status.geo)
+              tweet = {
+                'id' => status.id,
+                'created_at' => status.created_at,
+                'from' => status.from_user,
+                'text' => status.text,
+                'coordinates' => status.geo.coordinates
+              }
+              @statuses << tweet
+            else
+              #skip it
+            end
+          else
             tweet = {
+              'id' => status.id,
               'created_at' => status.created_at,
               'from' => status.from_user,
               'text' => status.text,
               'coordinates' => status.geo.coordinates
             }
             @statuses << tweet
-          else
-            #skip it
           end
-        else
-          tweet = {
-            'created_at' => status.created_at,
-            'from' => status.from_user,
-            'text' => status.text,
-            'coordinates' => status.geo.coordinates
-          }
-          @statuses << tweet
         end
-      end
+        @untilDate -= 1.days
+      end while @statuses.size < 10
       return @statuses
     end
   end
