@@ -4,7 +4,7 @@ class IndexController < ApplicationController
   require 'api/twitter.rb'
 
   def index
-    @twt = Api::Twit.new
-    @twts = @twt.search('justin')
+    @twt = Api::Tweet.new
+    @twts = @twt.search('apple', true)
   end
 end
