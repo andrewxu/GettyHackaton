@@ -1,4 +1,8 @@
+<%= @twts.count %>
 <%= @twts.inspect %>
 <% @twts.each do |img| %>
-  <%= image_tag img["image"] %>
+  <p>
+    <%= image_tag img["image"] %>
+    <%= img["city"] %>
+  </p>
 <% end %>

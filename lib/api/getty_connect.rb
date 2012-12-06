@@ -17,7 +17,7 @@ module Api
     end
 
     def decode(city_name)
-      geo = Geocoder.search("New York City").first
+      geo = Geocoder.search(city_name).first
       coord = geo.geometry['location']
       return {
         'long' => coord['lng'],
@@ -49,43 +49,58 @@ module Api
       return @status 
     end
       
-    def search_image(phrase, num_of_images = 25)
-      endpoint = "http://connect.gettyimages.com/v1/search/SearchForImages"
-      request = {
-          :RequestHeader => { :Token => @token},
-          :SearchForImages2RequestBody => {
-              :Query => { :SearchPhrase => phrase},
-              :ResultOptions => {
-                  :ItemCount => num_of_images,
-                  :ItemStartNumber => 1
-              },
-              :Filter => { :ImageFamilies => ["editorial"] }
-          }
-      }
-
-      response = post_json(request, endpoint)
-
+    def search_image(phrase, num_of_images = 10)
       images_return = []
-      if (response['ResponseHeader']['Status'] == 'success')
-        images = response['SearchForImagesResult']['Images']
-        images.each do |the_image|
-          image_details = get_details(the_image["ImageId"])
-
-          image_return = {
-            'image' => the_image["UrlPreview"],
-            'city' => image_details["GetImageDetailsResult"]["Images"].first["City"],
-            'coords' => decode(image_details["GetImageDetailsResult"]["Images"].first["City"]), 
-            'word' => phrase
-          }
-
-          images_return << image_return
+      current_step = 0;
+      begin
+        # precaculate the steps of the interval to get
+        if (num_of_images >= 75)
+          num_step = 75
+        else
+          num_step = num_of_images
         end
 
-        return images_return
-    
-      else 
-        return response;
-      end
+        endpoint = "http://connect.gettyimages.com/v1/search/SearchForImages"
+        request = {
+            :RequestHeader => { :Token => @token},
+            :SearchForImages2RequestBody => {
+                :Query => { :SearchPhrase => phrase},
+                :ResultOptions => {
+                    :ItemCount => num_step,
+                    :ItemStartNumber => current_step+1
+                },
+                :Filter => { :ImageFamilies => ["editorial"] }
+            }
+        }
+
+        response = post_json(request, endpoint)
+
+        if (response['ResponseHeader']['Status'] == 'success')
+          images = response['SearchForImagesResult']['Images']
+          images.each do |the_image|
+            image_details_response = get_details(the_image["ImageId"])
+            image_details = image_details_response["GetImageDetailsResult"]["Images"].first
+
+            image_data = {
+              'image' => the_image["UrlPreview"],
+              'city' => image_details["City"],
+              'date_created' => image_details["DateCreated"],
+              'caption' => image_details["Caption"],
+              'title' => image_details["Title"],
+              'coords' => decode(image_details["City"]), 
+              'word' => phrase
+            }
+
+            images_return << image_data
+          end
+        else 
+          return response;
+        end
+
+        current_step += 75
+        num_of_images -= 75
+      end while num_of_images > 0
+      return images_return
     end
 
     def get_details(image_id)
