@@ -16,15 +16,6 @@ module Api
       create_session
     end
 
-    def decode(city_name)
-      geo = Geocoder.search(city_name).first
-      coord = geo.geometry['location']
-      return {
-        'long' => coord['lng'],
-        'lat' => coord['lat']
-      }
-    end
-
     def create_session
       endpoint = "https://connect.gettyimages.com/v1/session/CreateSession"
       request = {
@@ -69,7 +60,7 @@ module Api
                     :ItemCount => num_step,
                     :ItemStartNumber => current_step+1
                 },
-                :Filter => { :ImageFamilies => ["editorial"] }
+                :Filter => { :ImageFamilies => ["editorial", "creative"] }
             }
         }
 
@@ -86,8 +77,8 @@ module Api
               'city' => image_details["City"],
               'date_created' => image_details["DateCreated"],
               'caption' => image_details["Caption"],
+              'image_faily' => image_details["ImageFamily"],
               'title' => image_details["Title"],
-              'coords' => decode(image_details["City"]), 
               'word' => phrase
             }
 

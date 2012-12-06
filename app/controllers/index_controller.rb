@@ -9,9 +9,9 @@ class IndexController < ApplicationController
   end
 
   def test
-    @twt = Api::Tweet.new
+    #@twt = Api::Tweet.new
     #@twts = @twt.search('christmas', true)
-    @twts = @twt.trends()
+    #@twts = @twt.trends()
     
     #@nyt = Api::NYT.new
     #@twts = @nyt.get_geocode('calgary')
@@ -19,8 +19,8 @@ class IndexController < ApplicationController
     #@geo = Api::Geo.new
     #@twts = @geo.decode('Calgary')
   
-    #@gc = Api::GettyConnect.new
-    #@twts = @gc.search_image('Mickey', 100)
+    @gc = Api::GettyConnect.new
+    @twts = @gc.search_image('Cats', 2)
   
     respond_to do |format|
       format.html # show.html.erb
