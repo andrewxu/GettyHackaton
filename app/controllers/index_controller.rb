@@ -6,7 +6,6 @@ class IndexController < ApplicationController
   require 'api/geocode.rb'
 
   def index
-
   end
 
   def test
