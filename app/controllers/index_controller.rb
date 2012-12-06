@@ -15,11 +15,11 @@ class IndexController < ApplicationController
     #@nyt = Api::NYT.new
     #@twts = @nyt.get_geocode('calgary')
 
-    @geo = Api::Geo.new
+    #@geo = Api::Geo.new
     #@twts = @geo.decode('Calgary')
   
-    @gc = Api::GettyConnect.new
-    @twts = @gc.search_image('movie', 100)
+    #@gc = Api::GettyConnect.new
+    #@twts = @gc.search_image('Mickey', 100)
 
     respond_to do |format|
       format.html # show.html.erb
