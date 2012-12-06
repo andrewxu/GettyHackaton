@@ -1,3 +1,5 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,600,300);
+@import url(http://fonts.googleapis.com/css?family=Allura);
 @import "foundation/common/ratios";
 @import "compass/css3";
 
@@ -27,12 +29,14 @@ $darkEdge: rgba(#000, .2);
 // Font Settings
 
 $fontSmoothing: antialiased;
-$headerFontFamily: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
-$headerFontWeight: bold;
+// $headerFontFamily: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+$headerFontFamily: "Open Sans", sans-serif;
+$headerFontWeight: 300;
 $headerFontStyle: normal;
 $headerFontColor: #222;
-$bodyFontFamily: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
-$bodyFontWeight: normal;
+// $bodyFontFamily: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+$bodyFontFamily: "Open Sans", sans-serif;
+$bodyFontWeight: 400;
 $bodyFontStyle: normal;
 $bodyFontColor: $txtColor;
 
