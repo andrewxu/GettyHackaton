@@ -5,47 +5,45 @@
 
 	$(document).ready(function () {
 
-		var	map = new L.Map('map', {
-			center: new L.LatLng(37.8,-96.9),
-			zoom: 3,
-		});
+		var southWest = new L.LatLng(-58.077876, -168.750000),
+			northEast = new L.LatLng(74.683250, 178.945313),
+		    bounds = new L.LatLngBounds(southWest, northEast);
 
+		var	map = new L.Map('map', {
+			center: new L.LatLng(28.304381, -21.445313),
+			zoom: 1,
+			maxBounds: bounds
+		});
 
 		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/30d1976aef28416ba4e9ed7cdd909ad8/5870/256/{z}/{x}/{y}.png',
 		cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
 		map.addLayer(cloudmade);
 
 		map.setView(new L.LatLng(40, -90), 3);                
+		var gettyImages = [];
 
-/*    	$.ajax({
+    	$.ajax({
     		type: 'GET',
     		url: 'test.json',
     		dataType: 'json',
-    		success: plotPoints,
+    		success: parseGettyResponse,
     		error:  function(req, message) {
     			console.log('Error loading map: ' + message);
     		}
-    	});*/
+    	});
 	var markers = new L.MarkerClusterGroup();
 
-	function plotPoints(json) {
-		$.each(json, function(i, item){
-			var location = new L.LatLng(item.coords.lat, item.coords.long);
-			var marker = new L.Marker(location);
-			var msg = '<h3>' + item.city + '</h3>' + 
-			'<img src="' + item.image + '">' +
-			'<p>something something shomething seomthigggg</p>';
-			marker.bindPopup(msg);
-			markers.addLayer(marker);
+	function parseGettyResponse(response) {
+		$.each(response, function(i, item){
+			gettyImages.push(item.image);
 		});
-
-		map.addLayer(markers);
 	}
 
 	function plotTweet(tweet) {
-		var location = new L.LatLng(tweet.geo.coordinates[0], tweet.geo.coordinates[1]);
-		var marker = new L.Marker(location);
-		var msg = '<p>' + tweet.text + '</p>';
+		var location = new L.LatLng(tweet.geo.coordinates[0], tweet.geo.coordinates[1]),
+			marker = new L.Marker(location),
+			num = Math.floor(Math.random() * (gettyImages.length + 1)),
+			msg = '<h3>Hello there</h3><img src="' + gettyImages[num] + '"/><p>' + tweet.text + '</p>';
 
 		marker.bindPopup(msg);
 		markers.addLayer(marker);
