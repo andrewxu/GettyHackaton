@@ -7,10 +7,10 @@ module Api
     attr_accessor :system_id, :system_pwd, :user_name, :user_pwd
 
     def initialize
-      @system_id = "9999"
-      @system_pwd = "8da++YMJzWX4RXCJYgf1DJN0PuLPcGnBuWFcjHiIBl0="
-      @user_name = "qaterms"
-      @user_pwd = "Pa55word"
+      @system_id = "10212"
+      @system_pwd = "RQdCMXOOyWHnUhhQtuivnx8NzEOIXINfsa5zSFPJGK4="
+      @user_name = "hackathon2012"
+      @user_pwd = "sPEbA41EPPXbamy"
 
       # initialize api by getting a token
       create_session
@@ -56,7 +56,11 @@ module Api
 
       response = post_json(request, endpoint)
 
-      return response['SearchForImagesResult']['Images']
+      if (response['ResponseHeader']['Status'] == 'success')
+        return response['SearchForImagesResult']['Images']
+      else 
+        return response;
+      end
     end
 
     def post_json(request, endpoint)
