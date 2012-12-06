@@ -68,8 +68,7 @@ module Api
       images_return = []
       if (response['ResponseHeader']['Status'] == 'success')
         images = response['SearchForImagesResult']['Images']
-        images.each do |image|
-          the_image = images.sample
+        images.each do |the_image|
           image_details = get_details(the_image["ImageId"])
 
           image_return = {
