@@ -336,7 +336,7 @@
                       $(twitter.container).prepend(twitter.renderTweet(tweet));
 
                       // Make a note of the timestamp on the first span
-                      // so we can update it later.
+                      // so we can update it later. 
                       $(twitter.container).find('span.time:first').each(function () {
                         this.timeStamp = tweet.created_at;
                       });
