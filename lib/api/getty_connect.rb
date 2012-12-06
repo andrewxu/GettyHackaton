@@ -65,17 +65,25 @@ module Api
 
       response = post_json(request, endpoint)
 
+      images_return = []
       if (response['ResponseHeader']['Status'] == 'success')
         images = response['SearchForImagesResult']['Images']
-        the_image = images.sample
-        image_details = get_details(the_image["ImageId"])
+        images.each do |image|
+          the_image = images.sample
+          image_details = get_details(the_image["ImageId"])
+
+          image_return = {
+            'image' => the_image["UrlPreview"],
+            'city' => image_details["GetImageDetailsResult"]["Images"].first["City"],
+            'coords' => decode(image_details["GetImageDetailsResult"]["Images"].first["City"]), 
+            'word' => phrase
+          }
+
+          images_return << image_return
+        end
+
+        return images_return
     
-        return {
-          'image' => the_image["UrlPreview"],
-          'city' => image_details["GetImageDetailsResult"]["Images"].first["City"],
-          'coords' => decode(image_details["GetImageDetailsResult"]["Images"].first["City"]), 
-          'word' => phrase
-        }
       else 
         return response;
       end
