@@ -12,12 +12,14 @@
 			});
 		})
 
+		var gettyImages = [],
+			map;
 		function initialize() {
 			var southWest = new L.LatLng(-58.077876, -168.750000),
 			northEast = new L.LatLng(74.683250, 178.945313),
 			bounds = new L.LatLngBounds(southWest, northEast);
 
-			var	map = new L.Map('map', {
+			map = new L.Map('map', {
 				center: new L.LatLng(28.304381, -21.445313),
 				zoom: 1,
 				maxBounds: bounds
@@ -28,7 +30,6 @@
 			map.addLayer(cloudmade);
 
 			map.setView(new L.LatLng(40, -90), 3);                
-			var gettyImages = [];
 
 			$.ajax({
 				type: 'GET',
@@ -61,6 +62,7 @@
 
 	$("#tweets").liveTwitter('food', {rpp: 300000, filter: function(tweet){
 		if(tweet.geo != null) {
+			console.log(tweet);
 			plotTweet(tweet);
 		}
 	}});
