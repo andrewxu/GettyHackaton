@@ -16,34 +16,85 @@
 <div id="map"></div>
 
 <script>
-var map = new L.Map("map")
-    .setView(new L.LatLng(37.8, -96.9), 4)
-    .addLayer(new L.TileLayer("http://{s}.tile.cloudmade.com/3eb45b95929d472d8fe4a2a5dafbd314/998/256/{z}/{x}/{y}.png"))
+var map;
 
-/* Initialize the SVG layer */
-map._initPathRoot()     
+$().ready(initialize);
 
-/* We simply pick up the SVG from the map object */
-var svg = d3.select("#map").select("svg"),
-    g = svg.append("g");
+function initialize()
+{
+    map = new L.Map('map', {
+        center: new L.LatLng(37.8,-96.9),
+        zoom: 3,
+    });
 
-/* Define the d3 projection */
-var path = d3.geo.path().projection(function project(x) {
-    var point = map.latLngToLayerPoint(new L.LatLng(x[1], x[0]));
-    return [point.x, point.y];
+
+var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/30d1976aef28416ba4e9ed7cdd909ad8/5870/256/{z}/{x}/{y}.png',
+    cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
+
+    map.addLayer(cloudmade);
+
+    map.setView(new L.LatLng(40, -90), 3);                
+
+    $.ajax({
+        type: 'GET',
+        url: 'tweets.json',
+        dataType: 'json',
+        success: generateHeatMap,
+        error:  function(req, message) {
+            console.log('Error loading map: ' + message);
+        }
+    });
+}
+
+function generateHeatMap(json)
+{
+  console.log(json);
+  // var heatmap = new L.TileLayer.HeatCanvas({},
+        // {'step':0.07, 'degree':HeatCanvas.LINEAR, 'opacity':0.5});
+
+  $.each(json.features, function(i, item) {
+    if (item.geo !== null) {
+      // heatmap.pushData(item.geo.lat, item.geo.lng, item.s);
+      var circleLocation = new L.LatLng(item.geo.lat, item.geo.lng, true),
+      circleOptions = {
+         weight: 2, 
+         color : '#000',
+         fillColor: '#222',
+         opacity: 0.1,
+         fillOpacity: 0.5,
+         radius: 10
+      }
+
+    var circle = new L.CircleMarker(circleLocation, circleOptions);//,
+         
+    map.addLayer(circle);
+    }
   });
 
-/* Load and project/redraw on zoom */
-d3.json("us-states.json", function(collection) {
-  var feature = g.selectAll("path")
-      .data(collection.features)
-    .enter().append("path")
-    .attr("d", path);
+  map.addLayer(heatmap);
 
-  map.on("viewreset", function reset() {
-    feature.attr("d",path)
-  })
-});
+}
 
+function addQuake(quake)
+{
+    var colors = getColor(quake.size),
+        circleLocation = new L.LatLng(quake.latitude, quake.longitude, true),
+        circleOptions = {
+            weight: 4, 
+            color : colors.stroke,
+            fillColor: colors.fill,
+            opacity: 0.5,
+            fillOpacity: 0.8,
+            radius: quake.size*2
+        };
+
+    var circle = new L.CircleMarker(circleLocation, circleOptions);//,
+    popupContent = '<h3>' + quake.title + '</h3><br/>' +
+        '<strong>Magnitude:&nbsp;</strong>' + quake.size + '<br/>' +
+        '<strong>Location:&nbsp;</strong>' + quake.latitude + ', ' + quake.longitude + '<br/>';
+
+    circle.bindPopup(popupContent);
+    map.addLayer(circle);
+}
 
 </script>
