@@ -2,9 +2,19 @@ class IndexController < ApplicationController
   require 'api/nyt.rb'
   require 'api/getty_connect.rb'
   require 'api/twitter.rb'
+  require 'api/geocode.rb'
 
   def index
-    # @twt = Api::Twit.new
-    # @twts = @twt.search('justin')
+  end
+
+  def test
+    #@twt = Api::Tweet.new
+    #@twts = @twt.search('christmas', true)
+    
+    #@nyt = Api::NYT.new
+    #@twts = @nyt.get_geocode('calgary')
+
+    @geo = Api::Geo.new
+    @twts = @geo.decode('Calgary')
   end
 end
