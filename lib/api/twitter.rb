@@ -14,6 +14,15 @@ module Api
       )
     end
 
+    def trends
+      current_trends = []
+      @client.trends.each do |trend|
+        current_trends << trend.name
+      end
+
+      return current_trends
+    end
+
     def search(phrase, onlyGeo = true)
       @statuses = []
       @untilDate = Date.today

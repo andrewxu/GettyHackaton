@@ -9,8 +9,9 @@ class IndexController < ApplicationController
   end
 
   def test
-    #@twt = Api::Tweet.new
+    @twt = Api::Tweet.new
     #@twts = @twt.search('christmas', true)
+    @twts = @twt.trends()
     
     #@nyt = Api::NYT.new
     #@twts = @nyt.get_geocode('calgary')
@@ -20,11 +21,11 @@ class IndexController < ApplicationController
   
     #@gc = Api::GettyConnect.new
     #@twts = @gc.search_image('Mickey', 100)
-
+  
     respond_to do |format|
       format.html # show.html.erb
       format.json { render :json => @twts.to_json }
-end
+    end
     #@ts = Api::TwitStream.new
     #@twts = @ts.getData 
   end

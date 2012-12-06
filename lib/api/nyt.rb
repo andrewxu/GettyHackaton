@@ -2,7 +2,7 @@ require "json"
 require "net/http"
 
 module Api
-  class NYT
+  class Nyt
     def initialize
       @endpoint = 'http://api.nytimes.com/svc/search/v1/article'
       @geo_endpoint = 'http://api.nytimes.com/svc/semantic/v2/geocodes'
@@ -12,7 +12,7 @@ module Api
 
     def get_articles(keyword)
       #http://developer.nytimes.com/docs/article_search_api#h2-responses
-      # look for 'Data Fields' can grab
+      # look for 'data fields' can grab
       request = @endpoint+'/?api-key='+@api_key+'&query='+keyword+'&fields=title,date,geo_facet'
 
       response = get_response(request)
@@ -27,10 +27,10 @@ module Api
     end
 
     def get_response(request)
-      uri = URI.parse(request)
+      uri = uri.parse(request)
 
-      response = Net::HTTP.get_response(uri).body
-      JSON.parse(response)
+      response = net::http.get_response(uri).body
+      json.parse(response)
     end
   end
 end
