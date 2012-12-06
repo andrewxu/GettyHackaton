@@ -16,6 +16,15 @@ module Api
       create_session
     end
 
+    def decode(city_name)
+      geo = Geocoder.search("New York City").first
+      coord = geo.geometry['location']
+      return {
+        'long' => coord['lng'],
+        'lat' => coord['lat']
+      }
+    end
+
     def create_session
       endpoint = "https://connect.gettyimages.com/v1/session/CreateSession"
       request = {
@@ -50,17 +59,41 @@ module Api
                   :ItemCount => 25,
                   :ItemStartNumber => 1
               },
-              :Filter => { :ImageFamilies => ["creative"] }
+              :Filter => { :ImageFamilies => ["editorial"] }
           }
       }
 
       response = post_json(request, endpoint)
 
       if (response['ResponseHeader']['Status'] == 'success')
-        return response['SearchForImagesResult']['Images']
+        images = response['SearchForImagesResult']['Images']
+        the_image = images.sample
+        image_details = get_details(the_image["ImageId"])
+    
+        return {
+          'image' => the_image["UrlPreview"],
+          'city' => image_details["GetImageDetailsResult"]["Images"].first["City"],
+          'coords' => decode(image_details["GetImageDetailsResult"]["Images"].first["City"]), 
+          'word' => phrase
+        }
       else 
         return response;
       end
+    end
+
+    def get_details(image_id)
+      endpoint = "http://connect.gettyimages.com/v1/search/GetImageDetails"
+      request = {
+          :RequestHeader => { :Token => @token},
+          :GetImageDetailsRequestBody => {
+              :ImageIds => [
+                image_id
+              ]
+          }
+      }
+
+      response = post_json(request, endpoint)
+      return response
     end
 
     def post_json(request, endpoint)
