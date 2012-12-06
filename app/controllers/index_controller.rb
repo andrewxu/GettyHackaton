@@ -20,8 +20,11 @@ class IndexController < ApplicationController
   
     @gc = Api::GettyConnect.new
     @twts = @gc.search_image('Mickey', 100)
-    @twts.to_json
-    
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render :json => @twts.to_json }
+end
     #@ts = Api::TwitStream.new
     #@twts = @ts.getData 
   end

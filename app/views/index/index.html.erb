@@ -12,7 +12,42 @@
     fill: brown;
     fill-opacity: .7;
   }
+
+  .leaflet-cluster-anim .leaflet-marker-icon, .leaflet-cluster-anim .leaflet-marker-shadow {
+  -webkit-transition: -webkit-transform 0.25s ease-out, opacity 0.25s ease-in;
+  -moz-transition: -moz-transform 0.25s ease-out, opacity 0.25s ease-in;
+  -o-transition: -o-transform 0.25s ease-out, opacity 0.25s ease-in;
+  transition: transform 0.25s ease-out, opacity 0.25s ease-in;
+  }
+
+  .marker-cluster-small, .marker-cluster-medium, .marker-cluster-large {
+  background-color: rgba(209, 8, 59, 0.8);
+  }
+.marker-cluster-small div, .marker-cluster-medium div, .marker-cluster-large div {
+  background-color: rgba(227, 48, 92, 0.8);
+  }
+
+.marker-cluster {
+  background-clip: padding-box;
+  border-radius: 20px;
+  }
+.marker-cluster div {
+  width: 30px;
+  height: 30px;
+  margin-left: 5px;
+  margin-top: 5px;
+
+  text-align: center;
+  border-radius: 15px;
+  font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  color: white;
+  }
+.marker-cluster span {
+  line-height: 30px;
+  }
 </style>
+
 <div id="map"></div>
 
 <script>
@@ -37,20 +72,37 @@ var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/30d1976aef28416ba4e9ed7cdd909a
 
     $.ajax({
         type: 'GET',
-        url: 'tweets.json',
+        url: 'test.json',
         dataType: 'json',
-        success: generateHeatMap,
+        success: cooltest,
         error:  function(req, message) {
             console.log('Error loading map: ' + message);
         }
     });
 }
 
+function cooltest(json) {
+  var markers = new L.MarkerClusterGroup();
+
+  $.each(json, function(i, item){
+    var location = new L.LatLng(item.coords.lat, item.coords.long);
+
+     var marker = new L.Marker(location);
+     var msg = '<h3>image</h3>' + 
+                '<img src="' + item.image + '">';
+     marker.bindPopup(msg);
+     markers.addLayer(marker);
+  });
+
+  map.addLayer(markers);
+}
+
 function generateHeatMap(json)
 {
-  console.log(json);
-  // var heatmap = new L.TileLayer.HeatCanvas({},
-        // {'step':0.07, 'degree':HeatCanvas.LINEAR, 'opacity':0.5});
+  var heatmap = new L.TileLayer.HeatCanvas({},
+        {'step':0.07, 'degree':HeatCanvas.LINEAR, 'opacity':0.5});
+
+var markers = new L.MarkerClusterGroup();
 
   $.each(json.features, function(i, item) {
     if (item.geo !== null) {
@@ -65,36 +117,17 @@ function generateHeatMap(json)
          radius: 10
       }
 
-    var circle = new L.CircleMarker(circleLocation, circleOptions);//,
+      var marker = new L.Marker(circleLocation);
+      var popup = "<h3>LOLOLOL</h3>";
+      markers.addLayer(marker);
+    // var circle = new L.CircleMarker(circleLocation, circleOptions);//,
          
-    map.addLayer(circle);
+    // map.addLayer(circle);
     }
   });
 
-  map.addLayer(heatmap);
+map.addLayer(markers);
+  // map.addLayer(heatmap);
 
 }
-
-function addQuake(quake)
-{
-    var colors = getColor(quake.size),
-        circleLocation = new L.LatLng(quake.latitude, quake.longitude, true),
-        circleOptions = {
-            weight: 4, 
-            color : colors.stroke,
-            fillColor: colors.fill,
-            opacity: 0.5,
-            fillOpacity: 0.8,
-            radius: quake.size*2
-        };
-
-    var circle = new L.CircleMarker(circleLocation, circleOptions);//,
-    popupContent = '<h3>' + quake.title + '</h3><br/>' +
-        '<strong>Magnitude:&nbsp;</strong>' + quake.size + '<br/>' +
-        '<strong>Location:&nbsp;</strong>' + quake.latitude + ', ' + quake.longitude + '<br/>';
-
-    circle.bindPopup(popupContent);
-    map.addLayer(circle);
-}
-
 </script>
