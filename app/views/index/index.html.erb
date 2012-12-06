@@ -1,54 +1,25 @@
 <!DOCTYPE html>
 <title>D3 + Leaflet</title>
-<style>
-  #map { width: 960px; height: 500px;}
-  path { 
-    fill: none; 
-    stroke: #666; 
-    stroke-width: 1px;
-  }
 
-  path:hover { 
-    fill: brown;
-    fill-opacity: .7;
-  }
+<div role="global-header" class="row collapse">
+    <div class="two columns">
+        <img src="http://www.gettyimages.ca/Images/GlobalNav/logo-GettyImages.png"/>
+        <h3>Mapstream</h3>
+    </div> 
 
-  .leaflet-cluster-anim .leaflet-marker-icon, .leaflet-cluster-anim .leaflet-marker-shadow {
-  -webkit-transition: -webkit-transform 0.25s ease-out, opacity 0.25s ease-in;
-  -moz-transition: -moz-transform 0.25s ease-out, opacity 0.25s ease-in;
-  -o-transition: -o-transform 0.25s ease-out, opacity 0.25s ease-in;
-  transition: transform 0.25s ease-out, opacity 0.25s ease-in;
-  }
+    <div class="eight columns">
+        <input type="text" />
+    </div>
+    <div class="two columns">
+        <a class="button expand postfix">Search</a>
+    </div>
+</div>
 
-  .marker-cluster-small, .marker-cluster-medium, .marker-cluster-large {
-  background-color: rgba(209, 8, 59, 0.8);
-  }
-.marker-cluster-small div, .marker-cluster-medium div, .marker-cluster-large div {
-  background-color: rgba(227, 48, 92, 0.8);
-  }
-
-.marker-cluster {
-  background-clip: padding-box;
-  border-radius: 20px;
-  }
-.marker-cluster div {
-  width: 30px;
-  height: 30px;
-  margin-left: 5px;
-  margin-top: 5px;
-
-  text-align: center;
-  border-radius: 15px;
-  font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
-  font-weight: bold;
-  color: white;
-  }
-.marker-cluster span {
-  line-height: 30px;
-  }
-</style>
-
-<div id="map"></div>
+<div class="row">
+    <div class="twelve columns">
+        <div id="map"></div>
+    </div>
+</div>
 
 <script>
 var map;
@@ -63,9 +34,8 @@ function initialize()
     });
 
 
-var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/30d1976aef28416ba4e9ed7cdd909ad8/5870/256/{z}/{x}/{y}.png',
+    var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/30d1976aef28416ba4e9ed7cdd909ad8/5870/256/{z}/{x}/{y}.png',
     cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
-
     map.addLayer(cloudmade);
 
     map.setView(new L.LatLng(40, -90), 3);                
@@ -74,60 +44,26 @@ var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/30d1976aef28416ba4e9ed7cdd909a
         type: 'GET',
         url: 'test.json',
         dataType: 'json',
-        success: cooltest,
+        success: plotPoints,
         error:  function(req, message) {
             console.log('Error loading map: ' + message);
         }
     });
 }
 
-function cooltest(json) {
+function plotPoints(json) {
   var markers = new L.MarkerClusterGroup();
 
   $.each(json, function(i, item){
     var location = new L.LatLng(item.coords.lat, item.coords.long);
-
-     var marker = new L.Marker(location);
-     var msg = '<h3>image</h3>' + 
-                '<img src="' + item.image + '">';
-     marker.bindPopup(msg);
-     markers.addLayer(marker);
-  });
+    var marker = new L.Marker(location);
+    var msg = '<h3>' + item.city + '</h3>' + 
+    '<img src="' + item.image + '">' +
+    '<p>something something shomething seomthigggg</p>';
+    marker.bindPopup(msg);
+    markers.addLayer(marker);
+});
 
   map.addLayer(markers);
-}
-
-function generateHeatMap(json)
-{
-  var heatmap = new L.TileLayer.HeatCanvas({},
-        {'step':0.07, 'degree':HeatCanvas.LINEAR, 'opacity':0.5});
-
-var markers = new L.MarkerClusterGroup();
-
-  $.each(json.features, function(i, item) {
-    if (item.geo !== null) {
-      // heatmap.pushData(item.geo.lat, item.geo.lng, item.s);
-      var circleLocation = new L.LatLng(item.geo.lat, item.geo.lng, true),
-      circleOptions = {
-         weight: 2, 
-         color : '#000',
-         fillColor: '#222',
-         opacity: 0.1,
-         fillOpacity: 0.5,
-         radius: 10
-      }
-
-      var marker = new L.Marker(circleLocation);
-      var popup = "<h3>LOLOLOL</h3>";
-      markers.addLayer(marker);
-    // var circle = new L.CircleMarker(circleLocation, circleOptions);//,
-         
-    // map.addLayer(circle);
-    }
-  });
-
-map.addLayer(markers);
-  // map.addLayer(heatmap);
-
 }
 </script>

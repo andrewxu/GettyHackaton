@@ -19,7 +19,7 @@ class IndexController < ApplicationController
     #@twts = @geo.decode('Calgary')
   
     @gc = Api::GettyConnect.new
-    @twts = @gc.search_image('Mickey', 100)
+    @twts = @gc.search_image('movie', 100)
 
     respond_to do |format|
       format.html # show.html.erb
