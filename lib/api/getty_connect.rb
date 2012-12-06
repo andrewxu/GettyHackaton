@@ -49,14 +49,14 @@ module Api
       return @status 
     end
       
-    def search_image(phrase)
+    def search_image(phrase, num_of_images = 25)
       endpoint = "http://connect.gettyimages.com/v1/search/SearchForImages"
       request = {
           :RequestHeader => { :Token => @token},
           :SearchForImages2RequestBody => {
               :Query => { :SearchPhrase => phrase},
               :ResultOptions => {
-                  :ItemCount => 25,
+                  :ItemCount => num_of_images,
                   :ItemStartNumber => 1
               },
               :Filter => { :ImageFamilies => ["editorial"] }

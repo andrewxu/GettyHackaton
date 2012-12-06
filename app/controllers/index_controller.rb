@@ -19,7 +19,7 @@ class IndexController < ApplicationController
     #@twts = @geo.decode('Calgary')
   
     @gc = Api::GettyConnect.new
-    @twts = @gc.search_image('Steve Jobs')
+    @twts = @gc.search_image('Steve Jobs', 3)
     @twts.to_json
     
     #@ts = Api::TwitStream.new
