@@ -14,7 +14,6 @@
 		});
 
 		function initialize() {
-
 			var southWest = new L.LatLng(-58.077876, -168.750000),
 			northEast = new L.LatLng(74.683250, 178.945313),
 			bounds = new L.LatLngBounds(southWest, northEast);
@@ -31,6 +30,13 @@
 
 			map.setView(new L.LatLng(40, -90), 3);                
 			markers = new L.MarkerClusterGroup();
+
+			$('.trend').each(function(i) {
+				$(this).click(function(event) {
+					event.preventDefault();
+					searchAndPlot($(this).text());
+				});
+			});
 		}
 
 	function redrawMap() {
@@ -79,7 +85,7 @@
 				imageMarkup += '</div>';
 				var tweetMarkup = '<div id="tweet">' + tweet.text + '</div>';
 				$('#info').append(imageMarkup);
-				$('#info').after(tweetMarkup);
+				$('#info').append(tweetMarkup);
 			});
 
 		markers.addLayer(marker);

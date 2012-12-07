@@ -1,17 +1,18 @@
-<!DOCTYPE html>
-<title>D3 + Leaflet</title>
-
 <div id="main-content">
     <div role="global-header">
-        <img src="http://www.gettyimages.ca/Images/GlobalNav/logo-GettyImages.png"/>
-        <h3>Mapstream</h3>
-        <input id="searchBar" type="text" placeholder="Search for an event" />
+        <a href="/"><img src="http://www.gettyimages.ca/Images/GlobalNav/logo-GettyImages.png"/>
+        <h3>Mapstream</h3></a>
+        <input id="searchBar" type="text" placeholder="Search for a keyword" />
         <a id="search" class="button expand postfix">Search</a>
     </div>
 
     <div id="info">
-        <h4>Introducing Mapstream</h4>
-        <h4 class="subheader">A social-based geographic search for Editorial imagery</h4>
+        <h4>Currently Trending Topics</h4>
+        <ul id="trends">
+            <% @trends_list.each do |trend| %>
+            <li><a href="" class="trend"><%= trend %></a></li>
+            <% end %>
+        </ul>
     </div>
     <div id="tweets"></div>
 </div>

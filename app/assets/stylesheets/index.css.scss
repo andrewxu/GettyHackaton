@@ -1,3 +1,11 @@
+#trends a {
+  color: #2ba6cb !important;
+
+  &:hover {
+    background: none;
+    color: darken(#2ba6cb, 0.2);
+  };
+}
 #main-content {
   float:left;
   width: 33%;
@@ -8,13 +16,22 @@
   width: 66%;
   height: 100%;
 }
+
+#info {
+  #image-set img {
+    margin-right: 10px;
+    max-width: 200px;
+  }
+}
+
 [role="global-header"] {
 	padding-bottom: 15px;
 
 	img {
 		margin: 10px 0 -20px 0;
 	}
-	a, input{
+	a {
+    text-decoration: none;
 		margin-top: 20px;
 	}
 }
@@ -23,34 +40,9 @@
   float: left;
 	border-left: 1px solid #000;
 	width: 100%; 
-  height: 1000px;
+  height: 900px;
 }
 
-[role="secondary-content"] {
-	padding-top: 5px;
-
-	#exquisite {
-		font-family: 'Allura', cursive;
-	}
-}
-
-.leaflet-popup-content {
-	min-height: 190px;
-	img {
-		float: left;
-		margin-right: 10px;
-		width: 100px;
-	}
-
-  p {
-    font-size: 12px;
-    line-height: 1.4;
-  }
-
-  small {
-    font-size: 10px;
-  }
-}
 .leaflet-cluster-anim .leaflet-marker-icon, .leaflet-cluster-anim .leaflet-marker-shadow {
   -webkit-transition: -webkit-transform 0.25s ease-out, opacity 0.25s ease-in;
   -moz-transition: -moz-transform 0.25s ease-out, opacity 0.25s ease-in;

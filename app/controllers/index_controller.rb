@@ -6,6 +6,8 @@ class IndexController < ApplicationController
   require 'api/geocode.rb'
 
   def index
+    api_helper = Api::Tweet.new
+    @trends_list = api_helper.trends 
   end
 
   def test
