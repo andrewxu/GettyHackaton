@@ -107,31 +107,51 @@
 			marker = new L.Marker(location),
 			num = Math.floor(Math.random() * (gettyImages.length - 6));
 
-      var imageMarkup = '<div id="image-set"></div>';
-			for(var i = 0; i < 6; i++) {
+      var imageMarkup = '<div id="image-set">';
+			for(var i = 0; i < 4; i++) {
 				imageMarkup += '<img id="image-' + i + '" class="image" src="' + gettyImages[num+i].image + '"/>';
 				imageMarkup += '<div id="dialog-for-image-' + i + '" class="dialog" style="width:700px; display:none;">'
-							+ '<img style="float:left; margin:0 10px 10px 0;" src="' + gettyImages[num+i].image + '"/>'
+							+ '<img style="float:left; margin:-10px 10px 10px 0;" src="' + gettyImages[num+i].image + '"/>'
 							+ '<div>'
-								+ '<h3>' + gettyImages[num+i].title + '</h3>'
+								+ '<h4>' + gettyImages[num+i].title + '</h4>'
 								+ '<p>' + gettyImages[num+i].caption + '</p>'
+								+ '<a id="pricing">Get pricing info</a>'
 							+ '</div>'
 							+ '</div>';
 			}
+			imageMarkup += '</div>';
 
 			marker.on('click', function() {
 				$('#info').empty();
-                var tweetMarkup = '<div id="tweet">' + tweet.text + '</div>';
-				$('#info').append(tweetMarkup);
+				var tweetMarkup = '<div id="tweet">' + tweet.text + '</div>';
+				$('#info').append(imageMarkup);
 			});
 
 		markers.addLayer(marker);
 		map.addLayer(markers);
 	}
+
 	$('body').delegate('.image', 'click', function(e){
 		var dialogID = '#dialog-for-' + e.target.id;
-		$(dialogID).modal();
+		$(dialogID).modal({
+			onOpen: function(dialog) {
+				dialog.overlay.fadeIn('slow', function() {
+					dialog.container.fadeIn('fast', function() {
+						dialog.data.fadeIn();
+					});
+				})
+			},
+			onClose: function(dialog) {
+				dialog.overlay.fadeOut('slow', function() {
+					dialog.container.fadeOut('fast', function() {
+						dialog.data.fadeOut(function() {
+							$.modal.close();
+						});
+					});
+				})
+			}
+		});
 		return false;
-	})
+	});
 });
 })(jQuery);
