@@ -75,20 +75,32 @@
            lnt = (parseFloat(coords[0])+parseFloat(coords[2]))/2,
            lat = (parseFloat(coords[1])+parseFloat(coords[3]))/2;
 
+        if (!$('#image-cont').hasClass('inited')) {
+            $('#image-cont').html('loading images..');
+            $('#image-cont').addClass('inited');
+        }
         console.log('refreshing image');
-        $('#image-cont').html('loading images..');
        $.get('index/image.json?phrase='+keyword+'&zoom='+map.getZoom()+'&long='+lnt+'&lat='+lat+'&num=4', function(data) {
             var imgdata = '';
-            $.each(data, function (key, img) {
-                imgdata += '<img class="sample-image" src="'+img.image+'" alt="'+img.caption+'" title="'+img.caption+'">';
-            });
+            
+            if (data) {
+                var undefound = false;
+                $.each(data, function (key, img) {
+                    imgdata += '<img class="sample-image" src="'+img.image+'" alt="'+img.caption+'" title="'+img.caption+'">';
+                    if (img.image == undefined) {
+                        undefound = true;
+                    }
+                });
 
-            $('#image-cont').fadeOut("slow", function(){
-                $('#image-cont').html(imgdata);
-                $('#image-cont').fadeIn("slow");
-            });
-            console.log('image replaced');
-       });
+                if (undefound) { 
+                    $('#image-cont').fadeOut("slow", function(){
+                        $('#image-cont').html(imgdata);
+                        $('#image-cont').fadeIn("slow");
+                    });
+                    console.log('image replaced');
+                }
+            }
+        });
     }
 
 	function searchAndPlot(searchTerm) {
@@ -104,24 +116,11 @@
 
 	function plotTweet(tweet) {
 		var location = new L.LatLng(tweet.geo.coordinates[0], tweet.geo.coordinates[1]),
-			marker = new L.Marker(location),
-			num = Math.floor(Math.random() * (gettyImages.length - 6));
-
-      var imageMarkup = '<div id="image-set"></div>';
-			for(var i = 0; i < 6; i++) {
-				imageMarkup += '<img id="image-' + i + '" class="image" src="' + gettyImages[num+i].image + '"/>';
-				imageMarkup += '<div id="dialog-for-image-' + i + '" class="dialog" style="width:700px; display:none;">'
-							+ '<img style="float:left; margin:0 10px 10px 0;" src="' + gettyImages[num+i].image + '"/>'
-							+ '<div>'
-								+ '<h3>' + gettyImages[num+i].title + '</h3>'
-								+ '<p>' + gettyImages[num+i].caption + '</p>'
-							+ '</div>'
-							+ '</div>';
-			}
+			marker = new L.Marker(location);
 
 			marker.on('click', function() {
 				$('#info').empty();
-                var tweetMarkup = '<div id="tweet">' + tweet.text + '</div>';
+                var tweetMarkup = '<div class="tweet">' + tweet.text + '</div>';
 				$('#info').append(tweetMarkup);
 			});
 
