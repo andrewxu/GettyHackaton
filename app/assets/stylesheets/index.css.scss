@@ -75,6 +75,10 @@
   }
 }
 
+#pricing {
+  @extend #search;
+}
+
 #site-logo {
   margin-top: 40px;
   margin-bottom: 30px;
@@ -181,4 +185,43 @@
   p {
     font-size: 12px;
   }
+}
+
+#tweets-wrapper {
+  border-top: #ccc 2px solid;    
+  margin: 20px 10px 0 20px;
+
+  #theader {
+    margin: 20px 0 15px 10px;
+  }
+
+  #tweets {
+    height: 300px;
+    overflow-y: scroll;
+  }
+}
+
+.tweet {
+  height: 70px;
+  padding: 5px 0;
+
+  &:nth-child(odd) {
+    background: #efefef;
+  }
+
+  img { 
+    float: left;
+    margin-right: 10px;
+  }
+
+  p {
+    font-size: 12px;
+    a { 
+      color: #4C90FE; 
+      &:hover {background:none};
+    }
+  }
+
+  .username { font-weight: bold;}
+  .time { font-size: 10px; font-style: italic;}
 }

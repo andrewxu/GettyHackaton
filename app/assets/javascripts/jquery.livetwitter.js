@@ -53,7 +53,7 @@
           mode:      'search', // Mode, valid options are: 'search', 'user_timeline', 'list', 'home_timeline'
           rate:      15000,    // Refresh rate in ms
           limit:     10,       // Limit number of results
-          imageSize: 24,       // Size of image in pixels
+          imageSize: 48,       // Size of image in pixels
           refresh:   true,
           timeLinks: true,
           replies:   true,
