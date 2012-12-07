@@ -1,5 +1,8 @@
+@import "sassy-buttons";
+@import "compass/css3";
+
 #trends a {
-  color: #2ba6cb !important;
+  color: #4C90FE !important;
 
   &:hover {
     background: none;
@@ -9,6 +12,7 @@
 #main-content {
   float:left;
   width: 33%;
+  height: 100%;
 }
 
 #map-content {
@@ -18,22 +22,75 @@
 }
 
 #info {
+  margin-left: 40px;
+  font-size: 18px;
+
+  h4 {
+    font-size: 18px;
+    color: #666666;
+    font-family: 'Arial';
+  }
+  
+  #trends {
+    color: #4C90FE;
+    list-style-type: none;
+
+    li {
+      font-size: 18px;
+      line-height: 20px;
+    }
+  }
+
   #image-set img {
     margin-right: 10px;
     max-width: 200px;
   }
 }
 
-[role="global-header"] {
-	padding-bottom: 15px;
+#searchBar {
+  margin-left: 20px;
+  margin-right: 2%;
+  float: left;
+  width: 70%;
+  border-radius: 5px;
+  height: 40px;
+  font-size: 18px;
+}
 
-	img {
-		margin: 10px 0 -20px 0;
-	}
-	a {
+#search {
+  border: 1px solid #1CA802;
+  color: white;
+  cursor: pointer;
+  font-family: 'Arial', san-serif;
+  font-size: 18px;
+  float: left;
+  height: 40px;
+  width: 20%;
+  padding: 0;
+  line-height: 40px;
+  @include background-image(linear-gradient(#3FCC08, #1CA802));
+  @include border-radius(5px);
+
+  &:hover {
+    @include background-image(linear-gradient(lighten(#3FCC08, 20%), #1CA802));
+  }
+}
+
+#site-logo {
+  margin-top: 40px;
+  margin-bottom: 40px;
+  text-align: center;
+
+  a:hover {
     text-decoration: none;
-		margin-top: 20px;
-	}
+  }
+}
+
+#main-description {
+  font-size: 18px;
+  margin: 30px 40px 40px 40px;
+  line-height: 20px;
+  color: #666666;
 }
 
 #map { 
@@ -41,6 +98,18 @@
 	border-left: 1px solid #000;
 	width: 100%; 
   height: 900px;
+}
+
+#image-cont {
+  clear: both;
+  width: 100%;
+  margin-left: 10px;
+  text-align: center;
+
+  img {
+    width: 150px;
+    margin: 15px;
+  }
 }
 
 .leaflet-cluster-anim .leaflet-marker-icon, .leaflet-cluster-anim .leaflet-marker-shadow {

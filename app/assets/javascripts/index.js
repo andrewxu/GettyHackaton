@@ -5,14 +5,22 @@
 
 	$(document).ready(function () {
 		var map, markers;
-		var gettyImages = [];
 		initialize();
 
 		$('#search').click(function(event) {
 			redrawMap();
+            $('#info').hide();
+            $('#main-description').hide();
             refreshImages('cats');
 			searchAndPlot($('#searchBar').val());
 		});
+
+        map.on('zoomstart', function () {
+            var searchTerm = $('#searchBar').val();
+            if (searchTerm) {
+                refreshImages();               
+            }
+        });
 
 		function initialize() {
 			var southWest = new L.LatLng(-58.077876, -168.750000),
@@ -67,15 +75,23 @@
            lnt = (parseFloat(coords[0])+parseFloat(coords[2]))/2,
            lat = (parseFloat(coords[1])+parseFloat(coords[3]))/2;
 
-       $.get('index/image.json?phrase='+keyword+'&zoom='+map.getZoom()+'&long='+lnt+'&lat='+lat+'&num=1', function(data) {
-            console.log(data[0].image);
-            var imgsrc = '<img src="'+data[0].image+'">';
-            $('#imager').html(imgsrc);
+        console.log('refreshing image');
+        $('#image-cont').html('loading images..');
+       $.get('index/image.json?phrase='+keyword+'&zoom='+map.getZoom()+'&long='+lnt+'&lat='+lat+'&num=4', function(data) {
+            var imgdata = '';
+            $.each(data, function (key, img) {
+                imgdata += '<img class="sample-image" src="'+img.image+'" alt="'+img.caption+'" title="'+img.caption+'">';
+            });
+
+            $('#image-cont').fadeOut("slow", function(){
+                $('#image-cont').html(imgdata);
+                $('#image-cont').fadeIn("slow");
+            });
+            console.log('image replaced');
        });
     }
 
 	function searchAndPlot(searchTerm) {
-		fetchGettyImages();
 		redrawMap();
 		$("#tweets").liveTwitter(searchTerm, {rpp: 300000, filter: function(tweet){
 			if(tweet.geo != null) {
@@ -85,21 +101,6 @@
 		}});
 	}
 	
-	function fetchGettyImages() {
-			$.ajax({
-				type: 'GET',
-				url: 'test.json',
-				dataType: 'json',
-				success: function(response) {
-					$.each(response, function(i, item){
-						gettyImages.push(item);
-					});
-				},
-				error:  function(req, message) {
-					console.log('Error loading map: ' + message);
-				}
-			});
-	}
 
 	function plotTweet(tweet) {
 		var location = new L.LatLng(tweet.geo.coordinates[0], tweet.geo.coordinates[1]),
@@ -107,15 +108,7 @@
 
 			marker.on('click', function() {
 				$('#info').empty();
-				var num = Math.floor(Math.random() * (gettyImages.length + 1));
-    
-				var imageMarkup = '<div id="image-set">';
-				for(var i = 0; i < 4; i++) {
-					imageMarkup += '<img src="' + gettyImages[num+i].image + '"/>';
-				}
-				imageMarkup += '</div>';
-				var tweetMarkup = '<div id="tweet">' + tweet.text + '</div>';
-				$('#info').append(imageMarkup);
+                var tweetMarkup = '<div id="tweet">' + tweet.text + '</div>';
 				$('#info').append(tweetMarkup);
 			});
 

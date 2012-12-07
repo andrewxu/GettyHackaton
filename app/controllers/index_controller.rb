@@ -7,7 +7,8 @@ class IndexController < ApplicationController
 
   def index
     api_helper = Api::Tweet.new
-    @trends_list = api_helper.trends 
+    #@trends_list = api_helper.trends 
+    @trends_list = []
   end
 
   def test

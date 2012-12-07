@@ -12,6 +12,7 @@ gem 'tweetstream'
 gem 'twitter-stream'
 gem 'geocoder'
 gem 'geokit'
+gem 'sassy-buttons'
 
 # Gems used only for assets and not required
 # in production environments by default.
