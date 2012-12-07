@@ -80,7 +80,8 @@
             $('#image-cont').addClass('inited');
         }
         console.log('refreshing image');
-       $.get('index/image.json?phrase='+keyword+'&zoom='+map.getZoom()+'&long='+lnt+'&lat='+lat+'&num=4', function(data) {
+       var request = $.get('index/image.json?phrase='+keyword+'&zoom='+map.getZoom()+'&long='+lnt+'&lat='+lat+'&num=4');
+        request.success(function(data) {
             var imgdata = '';
             
             if (data) {
@@ -100,6 +101,11 @@
                     console.log('image replaced');
                 }
             }
+        });
+
+        request.error(function(jqXHR, textStatus, errorThrown) {
+            console.log('error trying to get images');
+            $('#image-cont').html('error loading images'); 
         });
     }
 
