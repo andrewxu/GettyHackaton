@@ -9,10 +9,9 @@
 
 		$('#search').click(function(event) {
 			redrawMap();
-            $('#info').hide();
-            $('#main-description').hide();
-            refreshImages('cats');
-			searchAndPlot($('#searchBar').val());
+				$('#info').hide();
+				$('#main-description').hide();
+				searchAndPlot($('#searchBar').val());
 		});
 
         map.on('zoomstart', function () {
@@ -131,7 +130,7 @@
 		map.addLayer(markers);
 	}
 
-	$('body').delegate('.image', 'click', function(e){
+	$('body').delegate('.sample-image', 'click', function(e){
 		var dialogID = '#dialog-for-' + e.target.id;
 		$(dialogID).modal({
 			onOpen: function(dialog) {
