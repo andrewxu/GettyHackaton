@@ -1,4 +1,3 @@
-@import "sassy-buttons";
 @import "compass/css3";
 
 #trends a {
@@ -48,7 +47,7 @@
 }
 
 #searchBar {
-  margin-left: 20px;
+  margin-left: 25px;
   margin-right: 2%;
   float: left;
   width: 70%;
@@ -159,4 +158,27 @@
 .marker-cluster span {
   line-height: 30px;
 }
-#simplemodal-container {background-color:#fff;}
+
+#simplemodal-container a.modalCloseImg {
+  background:url(/assets/x.png) no-repeat; /* adjust url as required */
+  width:25px;
+  height:29px;
+  display:inline;
+  z-index:3200;
+  position:absolute;
+  top: 0px;
+  right: 0px;
+  cursor:pointer;
+}
+
+#simplemodal-overlay {
+  background-color: #000;
+}
+#simplemodal-container {
+  background-color:#fff;
+  @include box-shadow(#000, 2px, 3px, 2px);
+
+  p {
+    font-size: 12px;
+  }
+}

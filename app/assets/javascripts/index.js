@@ -9,10 +9,9 @@
 
 		$('#search').click(function(event) {
 			redrawMap();
-            $('#info').hide();
-            $('#main-description').hide();
-            refreshImages('cats');
-			searchAndPlot($('#searchBar').val());
+				$('#info').hide();
+				$('#main-description').hide();
+				searchAndPlot($('#searchBar').val());
 		});
 
         map.on('zoomstart', function () {
@@ -133,10 +132,28 @@
 		markers.addLayer(marker);
 		map.addLayer(markers);
 	}
-	$('body').delegate('.image', 'click', function(e){
+
+	$('body').delegate('.sample-image', 'click', function(e){
 		var dialogID = '#dialog-for-' + e.target.id;
-		$(dialogID).modal();
+		$(dialogID).modal({
+			onOpen: function(dialog) {
+				dialog.overlay.fadeIn('slow', function() {
+					dialog.container.fadeIn('fast', function() {
+						dialog.data.fadeIn();
+					});
+				})
+			},
+			onClose: function(dialog) {
+				dialog.overlay.fadeOut('slow', function() {
+					dialog.container.fadeOut('fast', function() {
+						dialog.data.fadeOut(function() {
+							$.modal.close();
+						});
+					});
+				})
+			}
+		});
 		return false;
-	})
+	});
 });
 })(jQuery);
