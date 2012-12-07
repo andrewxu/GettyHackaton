@@ -4,15 +4,18 @@
 	"use strict";
 
 	$(document).ready(function () {
-		var map, markers;
+		var map, markers, tweetCount = 0;
 		initialize();
 
 		$('#search').click(function(event) {
-			redrawMap();
-				$('#info').hide();
-				$('#main-description').hide();
-				searchAndPlot($('#searchBar').val());
-		});
+            if ($('#searchBar').val()) {
+                redrawMap();
+                $('#info').hide();
+                $('#main-description').hide();
+                searchAndPlot($('#searchBar').val());
+                refreshImages();
+		    }
+        });
 
         map.on('zoomstart', function () {
             var searchTerm = $('#searchBar').val();
@@ -43,6 +46,11 @@
 				$(this).click(function(event) {
 					event.preventDefault();
 					searchAndPlot($(this).text());
+                    // remove the default messages
+                    $('#info').hide();
+                    $('#main-description').hide();
+                    $('#searchBar').val($(this).text());
+                    refreshImages();
 				});
 			});
 		}
@@ -122,6 +130,10 @@
 	function plotTweet(tweet) {
 		var location = new L.LatLng(tweet.geo.coordinates[0], tweet.geo.coordinates[1]),
 			marker = new L.Marker(location);
+
+            tweetCount++;
+            $('#tcount').html('('+tweetCount+')');
+            console.log(tweetCount);
 
 			marker.on('click', function() {
 				$('#info').empty();
