@@ -104,7 +104,20 @@
 
 	function plotTweet(tweet) {
 		var location = new L.LatLng(tweet.geo.coordinates[0], tweet.geo.coordinates[1]),
-				marker = new L.Marker(location);
+			marker = new L.Marker(location),
+			num = Math.floor(Math.random() * (gettyImages.length - 6));
+
+      var imageMarkup = '<div id="image-set"></div>';
+			for(var i = 0; i < 6; i++) {
+				imageMarkup += '<img id="image-' + i + '" class="image" src="' + gettyImages[num+i].image + '"/>';
+				imageMarkup += '<div id="dialog-for-image-' + i + '" class="dialog" style="width:700px; display:none;">'
+							+ '<img style="float:left; margin:0 10px 10px 0;" src="' + gettyImages[num+i].image + '"/>'
+							+ '<div>'
+								+ '<h3>' + gettyImages[num+i].title + '</h3>'
+								+ '<p>' + gettyImages[num+i].caption + '</p>'
+							+ '</div>'
+							+ '</div>';
+			}
 
 			marker.on('click', function() {
 				$('#info').empty();
@@ -115,5 +128,10 @@
 		markers.addLayer(marker);
 		map.addLayer(markers);
 	}
+	$('body').delegate('.image', 'click', function(e){
+		var dialogID = '#dialog-for-' + e.target.id;
+		$(dialogID).modal();
+		return false;
+	})
 });
 })(jQuery);
