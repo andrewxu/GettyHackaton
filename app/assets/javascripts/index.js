@@ -108,7 +108,7 @@
                     }
                 });
 
-                if (undefound) { 
+                if (!undefound) { 
                     $('#image-cont').fadeOut("slow", function(){
                         $('#image-cont').html(imgdata);
                         $('#image-cont').fadeIn("slow");
