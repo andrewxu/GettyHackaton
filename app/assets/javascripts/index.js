@@ -14,6 +14,7 @@
                 $('#main-description').hide();
                 searchAndPlot($('#searchBar').val());
                 refreshImages();
+                $('#tweets-wrapper').show();
 		    }
         });
 
@@ -24,10 +25,18 @@
             }
         });
 
+        map.on('dragend', function () {
+            var searchTerm = $('#searchBar').val();
+            if (searchTerm) {
+                refreshImages();               
+            }
+        });
+
 		function initialize() {
 			var southWest = new L.LatLng(-58.077876, -168.750000),
 			northEast = new L.LatLng(74.683250, 178.945313),
 			bounds = new L.LatLngBounds(southWest, northEast);
+      $('#tweets-wrapper').hide();
 
 			map = new L.Map('map', {
 				center: new L.LatLng(28.304381, -21.445313),
@@ -49,6 +58,7 @@
                     // remove the default messages
                     $('#info').hide();
                     $('#main-description').hide();
+                    $('#tweets-wrapper').show();
                     $('#searchBar').val($(this).text());
                     refreshImages();
 				});
@@ -100,6 +110,7 @@
 							+ '<div>'
 								+ '<h3>' + img.title + '</h3>'
 								+ '<p>' + img.caption + '</p>'
+                + '<a id="pricing">Get Pricing Info</a>' 
 							+ '</div>'
 							+ '</div>';
 
@@ -108,7 +119,7 @@
                     }
                 });
 
-                if (!undefound) { 
+                if (undefound) { 
                     $('#image-cont').fadeOut("slow", function(){
                         $('#image-cont').html(imgdata);
                         $('#image-cont').fadeIn("slow");
