@@ -11,6 +11,7 @@ gem 'twitter'
 gem 'tweetstream'
 gem 'twitter-stream'
 gem 'geocoder'
+gem 'geokit'
 
 # Gems used only for assets and not required
 # in production environments by default.

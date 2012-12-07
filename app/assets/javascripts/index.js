@@ -10,6 +10,7 @@
 
 		$('#search').click(function(event) {
 			redrawMap();
+            refreshImages('cats');
 			searchAndPlot($('#searchBar').val());
 		});
 
@@ -28,7 +29,7 @@
 			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
 			map.addLayer(cloudmade);
 
-			map.setView(new L.LatLng(40, -90), 3);                
+			map.setView(new L.LatLng(40, -90), 3);
 			markers = new L.MarkerClusterGroup();
 
 			$('.trend').each(function(i) {
@@ -43,6 +44,20 @@
 		map.removeLayer(markers);
 		markers = new L.MarkerClusterGroup();
 	}
+
+    function refreshImages() {
+
+        var coords = map.getBounds().toBBoxString().split(','),
+            keyword = $('#searchBar').val(),
+           lnt = (parseFloat(coords[0])+parseFloat(coords[2]))/2,
+           lat = (parseFloat(coords[1])+parseFloat(coords[3]))/2;
+
+       $.get('index/image.json?phrase='+keyword+'&zoom='+map.getZoom()+'&long='+lnt+'&lat='+lat+'&num=1', function(data) {
+            console.log(data[0].image);
+            var imgsrc = '<img src="'+data[0].image+'">';
+            $('#imager').html(imgsrc);
+       });
+    }
 
 	function searchAndPlot(searchTerm) {
 		fetchGettyImages();

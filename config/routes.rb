@@ -1,6 +1,7 @@
 Gettyhack::Application.routes.draw do
   root :to => 'index#index'
   match '/index/test' => 'index#test'
+  match '/index/image' => 'index#image'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

@@ -11,5 +11,10 @@ module Api
         'lat' => coord['lat']
       }
     end
+
+    def encode(coord_string)
+      geo = Geocoder.search(coord_string)
+      return geo
+    end
   end
 end

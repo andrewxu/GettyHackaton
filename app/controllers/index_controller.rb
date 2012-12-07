@@ -18,11 +18,11 @@ class IndexController < ApplicationController
     #@nyt = Api::NYT.new
     #@twts = @nyt.get_geocode('calgary')
 
-    #@geo = Api::Geo.new
-    #@twts = @geo.decode('Calgary')
+    @geo = Api::Geo.new
+    @twts = @geo.encode('38.703378,-78.541259')
   
-    @gc = Api::GettyConnect.new
-    @twts = @gc.search_image('Cats', 2)
+    #@gc = Api::GettyConnect.new
+    #@twts = @gc.search_image('Cats', 2)
   
     respond_to do |format|
       format.html # show.html.erb
@@ -30,5 +30,36 @@ class IndexController < ApplicationController
     end
     #@ts = Api::TwitStream.new
     #@twts = @ts.getData 
+  end
+
+  def image
+    if (params[:phrase])
+      phrase = params[:phrase]
+    else
+      phrase = 'Apple'
+    end
+    if (params[:num])
+      num = params[:num]
+    else
+      num = 10
+    end
+    if (params[:long] && params[:lat])
+      coord_string = params[:lat]+","+params[:long]
+       res=Geokit::Geocoders::GoogleGeocoder.reverse_geocode coord_string
+       if (res.city)
+         city = res.city
+       else 
+         city = ''
+       end
+    else
+      city = ''
+    end
+
+    @gc = Api::GettyConnect.new
+    @images = @gc.search_image(phrase+' '+city, num.to_i)
+
+    respond_to do |format|
+      format.json { render :json => @images.to_json }
+    end
   end
 end
