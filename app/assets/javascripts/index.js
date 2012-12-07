@@ -66,19 +66,20 @@
 
 	function plotTweet(tweet) {
 		var location = new L.LatLng(tweet.geo.coordinates[0], tweet.geo.coordinates[1]),
-			marker = new L.Marker(location),
-			num = Math.floor(Math.random() * (gettyImages.length + 1));
-
-      var imageMarkup = '<div id="image-set"></div>';
-			for(var i = 0; i < 6; i++) {
-				imageMarkup += '<img src="' + gettyImages[num+i].image + '"/>';
-			}
-
-			console.log(imageMarkup);
+				marker = new L.Marker(location)
 
 			marker.on('click', function() {
-				$('#info').replaceWith(imageMarkup);
-				// $('#image-set').after('<div id="tweet">' + tweet.text + '</div>');
+				$('#info').empty();
+				var num = Math.floor(Math.random() * (gettyImages.length + 1));
+    
+				var imageMarkup = '<div id="image-set">';
+				for(var i = 0; i < 4; i++) {
+					imageMarkup += '<img src="' + gettyImages[num+i].image + '"/>';
+				}
+				imageMarkup += '</div>';
+				var tweetMarkup = '<div id="tweet">' + tweet.text + '</div>';
+				$('#info').append(imageMarkup);
+				$('#info').after(tweetMarkup);
 			});
 
 		markers.addLayer(marker);
