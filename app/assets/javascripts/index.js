@@ -41,8 +41,23 @@
 		}
 
 	function redrawMap() {
+
+		$('#map-content').append('<div id="overlay"></div>');
+		$("#overlay").css({
+			'opacity' : 0.8,
+			'top': 0,
+			'left': 0,
+			'background-color': 'black',
+			'background': 'url("assets/loader.gif") center no-repeat #000',
+			'height': '850px',
+			'width': '100%',
+			'z-index': 5000
+		});
+		markers.clearLayers();
 		map.removeLayer(markers);
-		markers = new L.MarkerClusterGroup();
+		$('#overlay').fadeOut('slow', function() {
+			$(this).remove();
+		});
 	}
 
     function refreshImages() {
@@ -61,6 +76,7 @@
 
 	function searchAndPlot(searchTerm) {
 		fetchGettyImages();
+		redrawMap();
 		$("#tweets").liveTwitter(searchTerm, {rpp: 300000, filter: function(tweet){
 			if(tweet.geo != null) {
 				plotTweet(tweet);
@@ -87,7 +103,7 @@
 
 	function plotTweet(tweet) {
 		var location = new L.LatLng(tweet.geo.coordinates[0], tweet.geo.coordinates[1]),
-				marker = new L.Marker(location)
+				marker = new L.Marker(location);
 
 			marker.on('click', function() {
 				$('#info').empty();
