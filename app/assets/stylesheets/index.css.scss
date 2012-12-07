@@ -182,6 +182,10 @@
   background-color:#fff;
   @include box-shadow(#000, 2px, 3px, 2px);
 
+  img {
+    margin: 10px;
+  }
+
   p {
     font-size: 12px;
   }

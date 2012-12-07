@@ -106,9 +106,9 @@
                 $.each(data, function (key, img) {
                     imgdata += '<img id="image-' + key + '" class="sample-image image" src="'+img.image+'" alt="'+img.caption+'" title="'+img.caption+'">'
 							+ '<div id="dialog-for-image-' + key + '" class="dialog" style="width:700px; display:none;">'
-							+ '<img style="float:left; margin:0 10px 10px 0;" src="' + img.image + '"/>'
+							+ '<img style="float:left; margin:-10px 10px 10px 0;" src="' + img.image + '"/>'
 							+ '<div>'
-								+ '<h3>' + img.title + '</h3>'
+								+ '<h4>' + img.title + '</h4>'
 								+ '<p>' + img.caption + '</p>'
                 + '<a id="pricing">Get Pricing Info</a>' 
 							+ '</div>'
