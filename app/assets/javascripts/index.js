@@ -9,9 +9,10 @@
 
 		$('#search').click(function(event) {
 			redrawMap();
-				$('#info').hide();
-				$('#main-description').hide();
-				searchAndPlot($('#searchBar').val());
+            $('#info').hide();
+            $('#main-description').hide();
+            refreshImages('cats');
+			searchAndPlot($('#searchBar').val());
 		});
 
         map.on('zoomstart', function () {
@@ -43,6 +44,8 @@
 				$(this).click(function(event) {
 					event.preventDefault();
 					searchAndPlot($(this).text());
+					$('#main-description').hide();
+					refreshImages();
 				});
 			});
 		}
