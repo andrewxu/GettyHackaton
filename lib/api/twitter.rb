@@ -6,6 +6,7 @@ require 'uri'
 module Api
   class Tweet
     def initialize
+      # user your own api key here
       @client = Twitter::Client.new(
         :consumer_key => "tpJxiHlK9imuVng7Ssr1g",
         :consumer_secret => "uzVKqjht7z1Qv0FB927ApOoGMLr8OXkA7HAC8aKRuQM",

@@ -4,6 +4,7 @@ require "net/http"
 module Api
   class Nyt
     def initialize
+      # Put in your own api keys here..
       @endpoint = 'http://api.nytimes.com/svc/search/v1/article'
       @geo_endpoint = 'http://api.nytimes.com/svc/semantic/v2/geocodes'
       @api_key = 'a33647e077772fbce68937749acf1614:0:67005581'

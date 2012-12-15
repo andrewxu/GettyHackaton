@@ -2,7 +2,6 @@ class IndexController < ApplicationController
   require 'api/nyt.rb'
   require 'api/getty_connect.rb'
   require 'api/twitter.rb'
-  #require 'api/twitter_stream.rb'
   require 'api/geocode.rb'
 
   def index
@@ -28,8 +27,6 @@ class IndexController < ApplicationController
       format.html # show.html.erb
       format.json { render :json => @twts.to_json }
     end
-    #@ts = Api::TwitStream.new
-    #@twts = @ts.getData 
   end
 
   def image
